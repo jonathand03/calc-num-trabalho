@@ -20,7 +20,7 @@ Erro alvo (A) & Euler & Euler melhorado & RK4 \\
 \(10^{-8}\) & \(2{,}54\times 10^{8}\) & \(1{,}75\times 10^{5}\) & \(3{,}96\times 10^{3}\) \\
 \bottomrule
 \end{tabular}
-\fonte{Elaborado pelo autor (2026).}
+\fonte{Elaborado pelos autores (2026).}
 \end{table}
 
 Para um erro de \(10^{-6}\)~A, o RK4 custa cerca de \(1{,}3\times 10^{3}\) avaliações, o Heun cerca de \(1{,}8\times 10^{4}\) e o Euler cerca de \(3{,}3\times 10^{6}\). Quatro avaliações por passo parecem um sobrecusto quando se olha um único passo. No erro prescrito, o RK4 é o método barato. O Euler só compete se a tolerância for grosseira e o passo couber na região de estabilidade. No circuito de \(Q=50\), essa segunda condição já elimina passos acima de 2~\(\mu\)s, e o custo do Euler sobe antes mesmo da conta da ordem.
