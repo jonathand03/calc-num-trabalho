@@ -1,0 +1,29 @@
+# Arquivos gerados pelo LaTeX
+*.aux
+*.bbl
+*.bcf
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.loa
+*.loq
+*.out
+*.run.xml
+*.synctex.gz
+*.toc
+*.lof
+*.lot
+build/
+
+# PDF gerado
+main.pdf
+trabalho_calculo_numerico.pdf
+
+# Python
+__pycache__/
+.venv/
+
+# Sistema
+.DS_Store
+Thumbs.db

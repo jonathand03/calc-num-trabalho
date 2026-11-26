@@ -21,7 +21,7 @@ import numpy as np
 
 ROOT = Path(__file__).resolve().parent.parent
 FIG = ROOT / "figuras"
-RES = ROOT / "resultados"
+RES = Path(__file__).resolve().parent / "resultados"
 
 # Paleta estável para daltonismo e impressão.
 COR = {
