@@ -9,6 +9,10 @@
 % --- Idioma e codificação ---
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+% Símbolos gregos usados nos títulos das figuras, dentro do código Scilab
+\DeclareUnicodeCharacter{03A9}{\ensuremath{\Omega}}
+\DeclareUnicodeCharacter{03C9}{\ensuremath{\omega}}
+\DeclareUnicodeCharacter{2080}{\ensuremath{{}_0}}
 \usepackage[brazilian]{babel}
 % Listagem do código no apêndice (fvextra antes do csquotes)
 \usepackage{fancyvrb}
@@ -93,7 +97,7 @@
     \fonte{#5}
   \end{figure}}
 
-% Caminho das imagens (geradas por codigo/rlc_runge_kutta.py)
+% Caminho das imagens (geradas por codigo/main.sce)
 \graphicspath{{figuras/}}
 
 % --- Listas ---

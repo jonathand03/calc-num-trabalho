@@ -1,18 +1,23 @@
 % =====================================================================
-% Apêndice A: código-fonte (lido direto de codigo/rlc_runge_kutta.py)
+% Apêndice A: código-fonte em Scilab (lido direto dos arquivos de codigo/)
+% Formato das listagens igual ao de Aquino (2020): fonte monoespaçada,
+% sem moldura, sem numeração de linhas, recuo de 4 espaços.
 % =====================================================================
 \appendix
 \section{Código-fonte da implementação}
 \label{ap:codigo}
 
-O código abaixo é o programa executado para produzir as tabelas e as figuras do trabalho. O espaçamento do apêndice é simples para que a listagem permaneça legível; o corpo do trabalho usa espaçamento 1,5. A linguagem é Python 3. Os métodos de Euler, de Euler melhorado, de Runge-Kutta de quarta ordem e o controlador de passo estão implementados nas funções \texttt{passo\_euler}, \texttt{passo\_heun}, \texttt{passo\_rk4} e \texttt{rk4\_adaptativo}.
+Este apêndice traz o código completo, escrito em Scilab, que produz todas as tabelas e figuras do trabalho. O espaçamento é simples para a listagem ficar legível. O programa está dividido em seis arquivos. O \texttt{main.sce} define a entrada de dados e chama os outros cinco. Os métodos de Euler, de Euler melhorado e de Runge-Kutta de quarta ordem estão nas funções \texttt{passo\_euler}, \texttt{passo\_heun} e \texttt{passo\_rk4}, do arquivo \texttt{rlc\_metodos.sci}.
 
 \begin{singlespace}
-\VerbatimInput[%
-  fontsize=\footnotesize,%
-  numbers=left,%
-  numbersep=6pt,%
-  breaklines=true,%
-  breakanywhere=true%
-]{codigo/rlc_runge_kutta.py}
+\newcommand{\listagem}[1]{%
+  \subsection*{\texttt{\detokenize{codigo/#1}}}
+  \VerbatimInput[fontsize=\footnotesize,tabsize=4,breaklines=true]{codigo/#1}}
+
+\listagem{main.sce}
+\listagem{rlc_metodos.sci}
+\listagem{rlc_exatas.sci}
+\listagem{rlc_analise.sci}
+\listagem{rlc_experimentos.sci}
+\listagem{rlc_figuras.sci}
 \end{singlespace}
