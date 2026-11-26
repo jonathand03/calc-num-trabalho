@@ -10,7 +10,8 @@ Entrega: **1 PDF** pelo Classroom, até **04/12/2026**. Enunciado em `referencia
 
 | Caminho | O que é |
 |---|---|
-| `main.tex` | Arquivo principal. Só junta as seções. |
+| `trabalho_calculo_numerico.tex` | Arquivo principal. Só junta as seções. |
+| `trabalho_calculo_numerico.pdf` | PDF final, versionado. Recompile antes de commitar mudança no texto. |
 | `config/preambulo.tex` | Formatação (fonte, margens, legendas, referências ABNT). |
 | `secoes/00-capa.tex`, `00-resumo.tex` | Capa, resumo, palavras-chave e sumário. |
 | `secoes/01-introducao.tex` a `07-conclusao.tex` | Uma seção por arquivo, na ordem do enunciado. |
@@ -31,8 +32,8 @@ Entrega: **1 PDF** pelo Classroom, até **04/12/2026**. Enunciado em `referencia
 latexmk
 ```
 
-O `.latexmkrc` já aponta para `main.tex` e roda o `biber`. Para limpar os auxiliares:
-`latexmk -c`.
+O `.latexmkrc` já aponta para `trabalho_calculo_numerico.tex` e roda o `biber`. Os auxiliares
+(`.aux`, `.log`, `.toc`...) ficam na raiz e são ignorados pelo git. Para limpar: `latexmk -c`.
 
 **No Overleaf:** compilador **pdfLaTeX**. Envie o repositório compactado em
 **New Project → Upload Project**.

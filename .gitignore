@@ -16,9 +16,7 @@
 *.lot
 build/
 
-# PDF gerado
-main.pdf
-trabalho_calculo_numerico.pdf
+# PDF final (trabalho_calculo_numerico.pdf) é versionado de propósito
 
 # Python
 __pycache__/
