@@ -1,28 +1,52 @@
 % =====================================================================
 % Capa. Sem número de seção.
+% Itens exigidos pelo enunciado: instituição, curso, disciplina, título,
+% autores, professor, cidade e ano.
+% Logo: coloque o arquivo em figuras/logo-ifce.png (ou .pdf). Sem ele,
+% a capa compila normalmente, só sem a imagem.
 % =====================================================================
 \begin{titlepage}
-\hypersetup{pageanchor=false}
-\thispagestyle{empty}
-\centering
-{\large INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DO CEARÁ\par}
-\vspace{0.35cm}
-{\large Departamento de Telemática\par}
-\vspace{0.25cm}
-{\large Curso de Engenharia de Computação e Engenharia de Telecomunicações\par}
-\vspace{1.8cm}
-{\large\bfseries Cálculo Numérico\par}
-\vspace{1.6cm}
-{\Large\bfseries História do Cálculo Numérico e sua Relação com a Ciência da Computação: Estudo e Implementação dos Métodos de Runge-Kutta na Simulação de Circuitos RLC\par}
-\vspace{2.2cm}
-{\large Jonathan Drumond\par
-Jardel Pimentel Brasiliano\par}
-\vspace{1.6cm}
-{\large Prof.\ Dr.\ Francisco J.\ A.\ de Aquino\par}
-\vfill
-{\large Fortaleza -- CE\par}
-\vspace{0.2cm}
-{\large 2026\par}
+  \hypersetup{pageanchor=false}
+  \thispagestyle{empty}
+  \centering
+  \singlespacing
+
+  % --- Instituição ---
+  \IfFileExists{figuras/logo-ifce.pdf}{\includegraphics[height=2.2cm]{logo-ifce.pdf}\par\vspace{0.6cm}}{%
+    \IfFileExists{figuras/logo-ifce.png}{\includegraphics[height=2.2cm]{logo-ifce.png}\par\vspace{0.6cm}}{}}
+  {\large\scshape Instituto Federal de Educação, Ciência\\e Tecnologia do Ceará\par}
+  \vspace{4pt}
+  {\normalsize Departamento de Telemática\par}
+
+  \vfill
+
+  % --- Título entre filetes ---
+  \rule{\textwidth}{1.2pt}\par
+  \vspace{0.5cm}
+  {\fontsize{18}{23}\selectfont\bfseries História do Cálculo Numérico e sua\\Relação com a Ciência da Computação\par}
+  \vspace{0.4cm}
+  {\large Estudo e Implementação dos Métodos de Runge-Kutta\\na Simulação de Circuitos RLC\par}
+  \vspace{0.5cm}
+  \rule{\textwidth}{0.4pt}\par
+
+  \vspace{1.6cm}
+
+  % --- Autores ---
+  {\large Jonathan Drumond\par
+  Jardel Pimentel Brasiliano\par}
+
+  \vfill
+
+  % --- Disciplina, cursos e professor ---
+  {\normalsize Cálculo Numérico\par}
+  {\small Engenharia de Computação e Engenharia de Telecomunicações\par}
+  \vspace{4pt}
+  {\small Prof.\ Dr.\ Francisco J.\ A.\ de Aquino\par}
+
+  \vspace{1.2cm}
+
+  % --- Local e ano ---
+  {\normalsize Fortaleza\,\textperiodcentered\,2026\par}
 \end{titlepage}
 \hypersetup{pageanchor=true}
 
