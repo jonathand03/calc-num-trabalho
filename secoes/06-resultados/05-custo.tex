@@ -3,11 +3,11 @@
 % =====================================================================
 \subsection{Custo para um erro prescrito}
 
-Se \(E(h)\approx C h^{p}\) no intervalo em que o truncamento domina, o passo que produz um erro alvo e o número de avaliações em \(T=5~\mathrm{ms}\) seguem de \(h=(E/C)^{1/p}\) e de \(N_f=s\,T/h\), com \(s=1\), 2 ou 4 estágios. A Tabela~\ref{tab:custo} usa o ajuste da Seção~6.1. As metas \(10^{-6}\) e \(10^{-8}\) caem dentro ou na borda da faixa medida para o Heun e para o RK4. A meta \(10^{-6}\) do Euler pede \(h\approx 1{,}5~\mathrm{ns}\), fora da faixa; a extrapolação é aceitável em precisão dupla porque o arredondamento acumulado nesse número de passos, da ordem de \(10^{-11}\)~A, ainda fica abaixo da meta. As metas folgadas de \(10^{-3}\) extrapolam para passos maiores do que 8~\(\mu\)s e devem ser lidas como ordem de grandeza.
+O ajuste da Seção~\ref{sec:convergencia} dá, para cada método, uma lei \(E(h)\approx C h^{p}\). Com ela, o passo que produz um erro alvo é \(h=(E/C)^{1/p}\). O custo é o número de avaliações de \(f\) em \(T=5~\mathrm{ms}\): \(N_f=s\,T/h\), com \(s=1\), 2 ou 4 avaliações por passo. A Tabela~\ref{tab:custo} traz o resultado. Algumas metas pedem passos fora da faixa medida, de \(0{,}25\) a 8~\(\mu\)s. A meta de \(10^{-6}\)~A no Euler, por exemplo, pede \(h\approx 1{,}5~\mathrm{ns}\). Esses valores são extrapolações e devem ser lidos como ordem de grandeza.
 
 \begin{table}[htbp]
 \centering
-\caption{Avaliações de \(f\) estimadas para um erro máximo de corrente no intervalo de 5~ms.}
+\caption{Avaliações de \(f\) estimadas para atingir um erro máximo de corrente no intervalo de 5~ms.}
 \label{tab:custo}
 \small
 \begin{tabular}{@{}rrrr@{}}
@@ -23,4 +23,6 @@ Erro alvo (A) & Euler & Euler melhorado & RK4 \\
 \fonte{Elaborado pelos autores (2026).}
 \end{table}
 
-Para um erro de \(10^{-6}\)~A, o RK4 custa cerca de \(1{,}3\times 10^{3}\) avaliações, o Heun cerca de \(1{,}8\times 10^{4}\) e o Euler cerca de \(3{,}3\times 10^{6}\). Quatro avaliações por passo parecem um sobrecusto quando se olha um único passo. No erro prescrito, o RK4 é o método barato. O Euler só compete se a tolerância for grosseira e o passo couber na região de estabilidade. No circuito de \(Q=50\), essa segunda condição já elimina passos acima de 2~\(\mu\)s, e o custo do Euler sobe antes mesmo da conta da ordem.
+Para um erro de \(10^{-6}\)~A, o RK4 precisa de cerca de \(1{,}3\times 10^{3}\) avaliações, o Euler melhorado, de \(1{,}8\times 10^{4}\), e o Euler, de \(3{,}3\times 10^{6}\). Quatro avaliações por passo parecem caras quando se olha um passo só. Para um erro fixo, porém, o RK4 é o método mais barato, porque pode usar um passo muito maior. \textcite[seção~10.6]{aquino2020} chega à mesma conclusão. O Euler só compete se a tolerância for grosseira e se o passo couber na região de estabilidade. No circuito com \(Q=50\), essa segunda condição já proíbe passos acima de 2~\(\mu\)s.
+
+O custo mostra, portanto, que a ordem do método vale mais que o número de avaliações por passo.

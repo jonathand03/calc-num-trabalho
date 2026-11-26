@@ -1,8 +1,0 @@
-% =====================================================================
-% 6.8 Limitações e melhorias
-% =====================================================================
-\subsection{Limitações e melhorias}
-
-Os métodos explícitos deste estudo são adequados ao RLC de um único par de polos, com \(Q\) moderado ou alto, desde que o passo respeite a Tabela~\ref{tab:hestab}. Eles deixam de ser a ferramenta certa em três situações. A primeira é o sistema rígido: um circuito com parasitário muito rápido e estado lento força \(h\) pelo polo que não interessa. A segunda é o sistema diferencial-algébrico da análise nodal de uma rede grande, para o qual os métodos implícitos do SPICE foram desenhados. A terceira é a portadora de radiofrequência integrada em tempo absoluto durante muitos símbolos; o caminho econômico é mudar o modelo, não o passo.
-
-Melhorias diretas, sem trocar de família, são um par embarcado com estimativa de erro mais barata do que a duplicação, como Dormand-Prince 5(4), um teto de passo igual ao limite de estabilidade linear e soma compensada para adiar o piso de arredondamento. Um método implícito, ainda que apenas a regra trapezoidal, seria o experimento natural de continuação: a mesma equação, a mesma referência analítica e uma região de estabilidade que cobre o semieixo real negativo. A comparação isolaria o que, neste trabalho, aparece como muro do método explícito.

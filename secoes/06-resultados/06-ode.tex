@@ -1,0 +1,29 @@
+% =====================================================================
+% 6.6 Comparação com o comando ode do Scilab
+% =====================================================================
+\subsection{Comparação com o integrador do Scilab}
+
+O roteiro pede comparar o método com a solução analítica ou com outra técnica numérica. As seções anteriores fizeram a primeira comparação. Esta faz a segunda, usando o comando \texttt{ode} do Scilab \cite[seção~10.7]{aquino2020}. Foram usadas duas opções: \texttt{"rk"}, da família Runge-Kutta, e a padrão, que chama o integrador \texttt{lsoda}. O \texttt{lsoda} escolhe sozinho entre o método preditor-corretor de Adams e um método para problemas rígidos, conforme o comportamento da solução \cite[seção~10.7]{aquino2020}. O teste usa o degrau subamortecido, com saída a cada 2~\(\mu\)s em 5~ms. As tolerâncias pedidas foram a relativa \(r_{tol}\) da Tabela~\ref{tab:ode} e a absoluta \(10^{-3}\,r_{tol}\).
+
+\begin{table}[htbp]
+\centering
+\caption{Degrau subamortecido: RK4 de passo fixo deste trabalho e comando \texttt{ode} do Scilab.}
+\label{tab:ode}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Integrador & \(r_{tol}\) & Erro máximo em \(i\) (A) & Avaliações de \(f\) \\
+\midrule
+RK4 próprio, \(h=2~\mu\mathrm{s}\) & --- & \(2{,}46\times 10^{-10}\) & \(10\,000\) \\
+\texttt{ode}, \texttt{lsoda} & \(10^{-6}\) & \(1{,}53\times 10^{-7}\) & \(704\) \\
+\texttt{ode}, \texttt{lsoda} & \(10^{-10}\) & \(2{,}45\times 10^{-11}\) & \(2\,020\) \\
+\texttt{ode}, \texttt{"rk"} & \(10^{-6}\) & \(1{,}37\times 10^{-13}\) & \(27\,652\) \\
+\texttt{ode}, \texttt{"rk"} & \(10^{-10}\) & \(1{,}35\times 10^{-13}\) & \(27\,972\) \\
+\bottomrule
+\end{tabular}
+\fonte{Elaborado pelos autores (2026).}
+\end{table}
+
+O \texttt{lsoda} com \(r_{tol}=10^{-10}\) chega a um erro menor que o do RK4 próprio com cerca de um quinto das avaliações. A diferença vem do controle automático: o \texttt{ode} ajusta o próprio trabalho à tolerância pedida, enquanto o RK4 deste trabalho usa o mesmo passo do início ao fim. A opção \texttt{"rk"} chega a um erro muito baixo, mas gasta quase três vezes mais avaliações que o RK4 próprio. Nesse teste, ela não responde à tolerância pedida: o erro e o custo quase não mudam entre \(10^{-6}\) e \(10^{-10}\).
+
+A comparação confirma os resultados dos métodos próprios por um caminho independente. Ela também mostra o valor do passo variável, citado por \textcite[seção~10.6]{aquino2020} como forma de obter boa precisão com tempo de cálculo razoável.

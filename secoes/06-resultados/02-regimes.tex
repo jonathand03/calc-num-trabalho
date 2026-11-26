@@ -3,11 +3,11 @@
 % =====================================================================
 \subsection{Regimes de amortecimento}
 
-A Tabela~\ref{tab:regimes} repete os três métodos com \(h=2~\mu\mathrm{s}\) nos três regimes. O RK4 mantém erro máximo de corrente entre \(10^{-10}\) e \(10^{-9}\)~A. O caso sobreamortecido é um pouco pior porque o polo rápido, \(\lambda\approx -4{,}79\times 10^{4}~\mathrm{s}^{-1}\), exige mais do passo: \(h|\lambda|\approx 0{,}096\). Ainda assim, o erro é irrelevante diante de uma corrente de miliampères. A Figura~\ref{fig:regimes} mostra que a curva do RK4 e a curva analítica se confundem nos três regimes. O método não está restrito ao oscilador para o qual a estabilidade é mais delicada.
+A Tabela~\ref{tab:regimes} repete os três métodos com \(h=2~\mu\mathrm{s}\) nos três regimes. O RK4 mantém o erro máximo da corrente entre \(10^{-10}\) e \(10^{-8}\)~A. O caso sobreamortecido tem o maior erro do RK4 porque o seu polo mais rápido, \(\lambda\approx -4{,}79\times 10^{4}~\mathrm{s}^{-1}\), exige mais do passo: \(h|\lambda|\approx 0{,}096\). Mesmo assim, esse erro é desprezível diante de correntes de miliampères. A Figura~\ref{fig:regimes} mostra que a curva do RK4 e a curva exata se confundem nos três regimes.
 
 \begin{table}[htbp]
 \centering
-\caption{Erro máximo da corrente com \(h=2~\mu\mathrm{s}\) e \(t_f=5~\mathrm{ms}\), nos três regimes.}
+\caption{Erro máximo da corrente, em ampères, com \(h=2~\mu\mathrm{s}\) e \(t_f=5~\mathrm{ms}\), nos três regimes.}
 \label{tab:regimes}
 \small
 \begin{tabular}{@{}lrrr@{}}
@@ -24,8 +24,10 @@ Sobreamortecido, \(R=500~\Omega\) & \(2{,}00\times 10^{-4}\) & \(6{,}60\times 10
 
 \begin{figure}[htbp]
 \centering
-\caption{Corrente do degrau nos três regimes. A curva analítica e o RK4 com \(h=2~\mu\mathrm{s}\) aparecem sobrepostos.}
+\caption{Corrente do degrau nos três regimes. A curva exata e o RK4 com \(h=2~\mu\mathrm{s}\) aparecem sobrepostos.}
 \label{fig:regimes}
 \includegraphics[width=0.94\textwidth]{regimes.pdf}
 \fonte{Elaborado pelos autores (2026).}
 \end{figure}
+
+O resultado mostra que os métodos não dependem do regime para funcionar. O que muda de um regime para outro é o polo mais rápido, e é ele que limita o passo.

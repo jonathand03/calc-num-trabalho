@@ -1,0 +1,10 @@
+% =====================================================================
+% 6.7 Limitações e melhorias
+% =====================================================================
+\subsection{Limitações e melhorias}
+
+Os métodos explícitos deste estudo funcionam bem no RLC com um único par de polos, desde que o passo respeite a Tabela~\ref{tab:hestab}. Eles deixam de ser a melhor escolha em três situações. A primeira é o sistema \emph{rígido}, que mistura uma dinâmica muito rápida com outra lenta: o polo rápido força um passo pequeno, mesmo sem interessar ao resultado. A segunda é o circuito grande, com muitos nós e componentes, em que o número de equações cresce muito. A terceira é a portadora de rádio simulada por muitos períodos em tempo absoluto, em que o custo cresce com a frequência, como mostrou a Seção~\ref{sec:aplicacoes}.
+
+Há melhorias diretas. A primeira é o passo variável, que a Tabela~\ref{tab:ode} mostrou ser mais econômico \cite[seção~10.6]{aquino2020}. A segunda é um teto para o passo igual ao limite de estabilidade da Tabela~\ref{tab:hestab}. A terceira é um método implícito, como a regra do trapézio, cuja região de estabilidade cobre todo o semiplano esquerdo. Aplicado ao mesmo circuito e comparado com a mesma solução exata, ele isolaria o que aqui aparece como limite dos métodos explícitos.
+
+Essas limitações não invalidam os resultados. Elas indicam até onde os três métodos explícitos podem ir e o que usar além desse ponto.
