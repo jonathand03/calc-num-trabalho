@@ -3,10 +3,16 @@
 % relatório de Computação Gráfica).
 % =====================================================================
 
+% Quebra URLs longas no hífen. Precisa vir antes do biblatex, que carrega o url.
+\PassOptionsToPackage{hyphens}{url}
+
 % --- Idioma e codificação ---
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[brazilian]{babel}
+% Listagem do código no apêndice (fvextra antes do csquotes)
+\usepackage{fancyvrb}
+\usepackage{fvextra}
 \usepackage{csquotes}
 
 % --- Fonte: Times New Roman 12 ---
@@ -100,20 +106,22 @@
   \item[]\footnotesize\singlespacing}{%
   \end{list}\vspace{6pt}}
 
-% --- Listagem do código no apêndice ---
-\usepackage{fancyvrb}
-\usepackage{fvextra}
-
-% --- Referências (provisório: lista manual em secoes/99-referencias.tex) ---
-% A etapa de migração troca natbib por biblatex-abnt + referencias.bib.
-\usepackage[round,semicolon,authoryear]{natbib}
+% --- Referências ABNT (NBR 6023:2018) com biblatex-abnt ---
+% maxbibnames=99: a lista mostra todos os autores (NBR 6023 recomenda); no texto, 4+ autores viram et al.
+\usepackage[style=abnt,backend=biber,justify=false,extrayear,maxbibnames=99]{biblatex}
+\addbibresource{referencias.bib}
+% Sem data de publicação, o rótulo vira [s.d.]; a data de acesso nunca entra como ano.
+\DeclareLabeldate{\field{date}\field{year}\field{eventdate}\field{origdate}\literal{nodate}}
+% NBR 10520:2023: no texto, autor só com a inicial maiúscula -> (Butcher, 2016).
+% Na lista de referências o SOBRENOME continua em CAIXA ALTA.
 \makeatletter
-\renewcommand{\@biblabel}[1]{}
+\renewcommand*{\UpperOrSCCite}[1]{#1}
+\DeclareFieldFormat{uppercasecite}{#1}
 \makeatother
-\setlength{\bibhang}{1.25cm}
+\setlength\bibitemsep{\baselineskip}
+\renewcommand*{\bibfont}{\normalsize\singlespacing}
 
 % --- Links (sem caixas coloridas) ---
-\usepackage[hyphens]{url}          % quebra URLs longas no hífen
 \usepackage[hidelinks]{hyperref}
 \urlstyle{same}
 

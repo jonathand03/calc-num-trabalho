@@ -11,7 +11,7 @@ Seja \(y(t)\in\mathbb{R}^{m}\) a solução de
 y'(t) = f(t,y(t)), \qquad y(t_0)=y_0.
 \label{eq:pvi}
 \end{equation}
-Se \(f\) é contínua e lipschitziana em \(y\), numa faixa que contém a solução, o problema de valor inicial tem solução única \citep{boyce2012,hairer1993}. Um método de passo único produz \(y_{n+1}\) usando apenas \(t_n\), \(y_n\) e o passo \(h_n\). A consistência de ordem \(p\) significa que o erro local de truncamento, cometido num único passo a partir do valor exato, é \(\mathcal{O}(h^{p+1})\). Se o método também é zero-estável, o erro global num intervalo fixo \([t_0,t_f]\) é \(\mathcal{O}(h^{p})\) quando \(h\to 0\) \citep{hairer1993,quarteroni2007}.
+Se \(f\) é contínua e lipschitziana em \(y\), numa faixa que contém a solução, o problema de valor inicial tem solução única \cite{boyce2012,hairer1993}. Um método de passo único produz \(y_{n+1}\) usando apenas \(t_n\), \(y_n\) e o passo \(h_n\). A consistência de ordem \(p\) significa que o erro local de truncamento, cometido num único passo a partir do valor exato, é \(\mathcal{O}(h^{p+1})\). Se o método também é zero-estável, o erro global num intervalo fixo \([t_0,t_f]\) é \(\mathcal{O}(h^{p})\) quando \(h\to 0\) \cite{hairer1993,quarteroni2007}.
 
 A zero-estabilidade é uma propriedade do método no limite de passo nulo: perturbações pequenas não podem ser amplificadas de forma ilimitada quando o número de passos cresce e \(h\) diminui. Os métodos explícitos de Runge-Kutta usados aqui são zero-estáveis. Isso não impede que, para um \(h\) fixo e positivo, a iteração amplifique o modo próprio do sistema. Essa segunda propriedade é a estabilidade absoluta, tratada na Seção~\ref{sec:estabilidade}. Confundi-las leva a concluir, erroneamente, que um método convergente pode usar qualquer passo.
 
@@ -32,7 +32,7 @@ i/C
 \end{bmatrix}.
 \label{eq:sistema}
 \end{equation}
-Essa descrição de estados é a forma usual do RLC série em análise de circuitos \citep{nilsson2019}. A matriz do sistema homogêneo é
+Essa descrição de estados é a forma usual do RLC série em análise de circuitos \cite{nilsson2019}. A matriz do sistema homogêneo é
 \begin{equation}
 A=
 \begin{bmatrix}
@@ -97,7 +97,7 @@ O método de Euler avança pela reta tangente,
 y_{n+1}=y_n+h f(t_n,y_n).
 \label{eq:euler}
 \end{equation}
-A série de Taylor da solução exata é \(y(t_n+h)=y+hf+\frac{h^{2}}{2}y''+\mathcal{O}(h^{3})\). O método retém os dois primeiros termos. O erro local é \(\frac{h^{2}}{2}y''(\xi)\), e o erro global num intervalo fixo é \(\mathcal{O}(h)\), desde que o passo esteja na região de estabilidade \citep{burden2016,chapra2015}.
+A série de Taylor da solução exata é \(y(t_n+h)=y+hf+\frac{h^{2}}{2}y''+\mathcal{O}(h^{3})\). O método retém os dois primeiros termos. O erro local é \(\frac{h^{2}}{2}y''(\xi)\), e o erro global num intervalo fixo é \(\mathcal{O}(h)\), desde que o passo esteja na região de estabilidade \cite{burden2016,chapra2015}.
 
 O Euler melhorado, ou método de Heun, usa a média entre a derivada no início do passo e a derivada prevista no fim:
 \begin{align}
@@ -105,7 +105,7 @@ k_1&=f(t_n,y_n), \nonumber\\
 k_2&=f(t_n+h,\,y_n+hk_1), \nonumber\\
 y_{n+1}&=y_n+\frac{h}{2}(k_1+k_2). \label{eq:heun}
 \end{align}
-Expandindo \(k_2=f+h y''+\mathcal{O}(h^{2})\) e substituindo, o incremento reproduz Taylor até \(\frac{h^{2}}{2}y''\). O erro local passa a \(\mathcal{O}(h^{3})\) e o erro global a \(\mathcal{O}(h^{2})\) \citep{heun1900,hairer1993}. O método de Euler modificado, ou do ponto médio, é outro Runge-Kutta de ordem 2, com a avaliação no meio do passo. Para sistemas lineares, os dois têm a mesma função de estabilidade \(R(z)=1+z+z^{2}/2\), porque o polinômio de grau 2 que copia a exponencial até a ordem 2 é único. As constantes de erro, porém, diferem. O código implementa o Euler melhorado, que é a forma pedida pela disciplina.
+Expandindo \(k_2=f+h y''+\mathcal{O}(h^{2})\) e substituindo, o incremento reproduz Taylor até \(\frac{h^{2}}{2}y''\). O erro local passa a \(\mathcal{O}(h^{3})\) e o erro global a \(\mathcal{O}(h^{2})\) \cite{heun1900,hairer1993}. O método de Euler modificado, ou do ponto médio, é outro Runge-Kutta de ordem 2, com a avaliação no meio do passo. Para sistemas lineares, os dois têm a mesma função de estabilidade \(R(z)=1+z+z^{2}/2\), porque o polinômio de grau 2 que copia a exponencial até a ordem 2 é único. As constantes de erro, porém, diferem. O código implementa o Euler melhorado, que é a forma pedida pela disciplina.
 
 \subsection{Runge-Kutta clássico de quarta ordem}
 
@@ -129,7 +129,7 @@ O quadro de Butcher correspondente é
 \end{array}
 \label{eq:butcher}
 \end{equation}
-Os coeficientes satisfazem as condições de ordem até 4. O erro local é \(\mathcal{O}(h^{5})\) e o erro global é \(\mathcal{O}(h^{4})\) enquanto a solução for suficientemente suave e o passo, estável \citep{kutta1901,butcher2016,hairer1993}. Cada passo custa quatro avaliações de \(f\). A comparação justa de custo não é o número de passos, e sim o número de avaliações necessário para um erro prescrito.
+Os coeficientes satisfazem as condições de ordem até 4. O erro local é \(\mathcal{O}(h^{5})\) e o erro global é \(\mathcal{O}(h^{4})\) enquanto a solução for suficientemente suave e o passo, estável \cite{kutta1901,butcher2016,hairer1993}. Cada passo custa quatro avaliações de \(f\). A comparação justa de custo não é o número de passos, e sim o número de avaliações necessário para um erro prescrito.
 
 \subsection{Estabilidade absoluta}
 \label{sec:estabilidade}
@@ -154,11 +154,11 @@ O RK4 inclui um trecho do eixo imaginário até \(|\mathrm{Im}(z)|\approx 2\sqrt
 
 \subsection{Arredondamento}
 
-O erro global observado é a soma do erro de truncamento, que cai como \(h^{p}\), e do erro de arredondamento, que não obedece à mesma lei. Em precisão dupla, o segundo só aparece com passos muito pequenos ou com muitas operações. Em precisão simples, o piso surge cedo. Reduzir \(h\) além desse piso piora o resultado, porque aumentam as operações sem ganho de truncamento \citep{goldberg1991,higham2002}. O controlador de passo e a escolha do formato precisam ser decididos juntos: uma tolerância de \(10^{-12}\) não é atingível em \emph{binary32} neste problema, qualquer que seja o passo.
+O erro global observado é a soma do erro de truncamento, que cai como \(h^{p}\), e do erro de arredondamento, que não obedece à mesma lei. Em precisão dupla, o segundo só aparece com passos muito pequenos ou com muitas operações. Em precisão simples, o piso surge cedo. Reduzir \(h\) além desse piso piora o resultado, porque aumentam as operações sem ganho de truncamento \cite{goldberg1991,higham2002}. O controlador de passo e a escolha do formato precisam ser decididos juntos: uma tolerância de \(10^{-12}\) não é atingível em \emph{binary32} neste problema, qualquer que seja o passo.
 
 \subsection{Passo adaptativo}
 
-No problema linear de coeficientes constantes, o melhor passo fixo é quase constante, porque a escala de tempo não muda. Um controlador ainda é útil quando a excitação tem trechos mortos e trechos rápidos, e é o mecanismo que transforma uma tolerância pedida pelo usuário num passo. O código usa duplicação de passo \citep{press2007,hairer1993}. Um passo de tamanho \(h\) é comparado com dois passos de tamanho \(h/2\). Para um método de ordem 4, o erro local escala com \(h^{5}\), e dois meios passos acumulam \(2\times(h/2)^{5}=h^{5}/16\). A diferença \(\Delta\) entre as duas soluções estima \(\frac{15}{16}\) do erro local do passo cheio. O erro da solução de dois meios passos, que é a aceita, é estimado por \(\|\Delta\|/15\).
+No problema linear de coeficientes constantes, o melhor passo fixo é quase constante, porque a escala de tempo não muda. Um controlador ainda é útil quando a excitação tem trechos mortos e trechos rápidos, e é o mecanismo que transforma uma tolerância pedida pelo usuário num passo. O código usa duplicação de passo \cite{press2007,hairer1993}. Um passo de tamanho \(h\) é comparado com dois passos de tamanho \(h/2\). Para um método de ordem 4, o erro local escala com \(h^{5}\), e dois meios passos acumulam \(2\times(h/2)^{5}=h^{5}/16\). A diferença \(\Delta\) entre as duas soluções estima \(\frac{15}{16}\) do erro local do passo cheio. O erro da solução de dois meios passos, que é a aceita, é estimado por \(\|\Delta\|/15\).
 
 A norma é relativa e absoluta, componente a componente:
 \begin{equation}
