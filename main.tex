@@ -1,0 +1,30 @@
+% =====================================================================
+% Trabalho de Cálculo Numérico (2026.2)
+% Compilar: latexmk  (ou pelo Overleaf, com o compilador pdfLaTeX)
+% Cada seção fica em um arquivo separado dentro de secoes/
+% =====================================================================
+\documentclass[12pt,a4paper]{article}
+\input{config/preambulo}
+
+\begin{document}
+
+% Capa, resumo e sumário (sem número de seção)
+\input{secoes/00-capa}
+\input{secoes/00-resumo}
+
+\input{secoes/01-introducao}
+\input{secoes/02-referencial-historico}
+\input{secoes/03-fundamentacao}
+\input{secoes/04-algoritmos}
+\input{secoes/05-aplicacoes}
+\input{secoes/06-resultados}
+\input{secoes/07-conclusao}
+\input{secoes/08-nota-ia}
+
+% Referências: sem número de seção
+\input{secoes/99-referencias}
+
+% Apêndice
+\input{secoes/apendice-codigo}
+
+\end{document}

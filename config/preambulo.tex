@@ -1,0 +1,57 @@
+% =====================================================================
+% Preâmbulo: pacotes e formatação do relatório
+% =====================================================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{mathptmx}
+\usepackage{amsmath,amssymb}
+\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{caption}
+\usepackage{float}
+\usepackage{enumitem}
+\usepackage{tikz}
+\usepackage{newfloat}
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+\usepackage{fancyhdr}
+\usepackage[hyphens]{url}
+\usepackage[round,semicolon,authoryear]{natbib}
+\usepackage[hidelinks]{hyperref}
+
+\onehalfspacing
+\frenchspacing
+\setlength{\parindent}{1.25cm}
+\setlength{\parskip}{0pt}
+\raggedbottom
+\setlist{itemsep=0.25em,topsep=0.4em}
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+\DeclareFloatingEnvironment[fileext=loa,listname={Lista de algoritmos},name=Algoritmo,placement=htbp]{algoritmo}
+\graphicspath{{figuras/}}
+\urlstyle{rm}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[R]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\fancypagestyle{plain}{%
+  \fancyhf{}%
+  \fancyhead[R]{\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+}
+\numberwithin{equation}{section}
+
+\makeatletter
+\renewcommand{\@biblabel}[1]{}
+\makeatother
+\setlength{\bibhang}{1.25cm}
+
+\title{do Cálculo Numérico e sua Relação com a Ciência da Computação: Estudo e Implementação dos Métodos de Runge-Kutta na Simulação de Circuitos RLC}
+
+\date{2026}

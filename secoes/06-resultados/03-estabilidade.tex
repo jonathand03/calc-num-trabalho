@@ -1,0 +1,32 @@
+% =====================================================================
+% 6.3 Estabilidade e fator de qualidade
+% =====================================================================
+\subsection{Estabilidade e fator de qualidade}
+
+A Tabela~\ref{tab:hestab} traz os maiores passos para os quais \(|R(h\lambda)|\le 1\). No Euler subamortecido o valor coincide com \(RC\): 20{,}0~\(\mu\)s para \(Q=5\) e 2{,}00~\(\mu\)s para \(Q=50\). O Heun chega a 104{,}9~\(\mu\)s e a 44{,}4~\(\mu\)s. O RK4 chega a 295{,}0~\(\mu\)s e a 284{,}8~\(\mu\)s. No tanque de alto \(Q\), o limite do RK4 quase não muda, e o do Euler cai dez vezes. O período natural é 628~\(\mu\)s. O Euler com \(Q=50\) precisa de mais de trezentos passos por período só para não divergir. O RK4 ainda é estável com cerca de dois passos por período, embora com erro grande. Estabilidade não é precisão; é a condição para que a precisão possa ser discutida.
+
+\begin{table}[htbp]
+\centering
+\caption{Maior passo absolutamente estável, obtido da função \(R(z)\) e dos autovalores do circuito.}
+\label{tab:hestab}
+\small
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+Circuito & Euler & Euler melhorado & RK4 \\
+\midrule
+\(R=20~\Omega\), \(Q=5\) & 20{,}0~\(\mu\)s & 104{,}9~\(\mu\)s & 295{,}0~\(\mu\)s \\
+\(R=2~\Omega\), \(Q=50\) & 2{,}00~\(\mu\)s & 44{,}4~\(\mu\)s & 284{,}8~\(\mu\)s \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+A Figura~\ref{fig:estab} integra o degrau até 6~ms e marca o pico de \(|i|\). As retas verticais são os limites da Tabela~\ref{tab:hestab}. Para \(Q=5\), o pico físico fica perto de 43~mA. Com \(h=25~\mu\mathrm{s}\), o Euler já atinge 0{,}21~A; com \(h=40~\mu\mathrm{s}\), a integração é interrompida pela guarda de divergência. O Heun permanece físico até 80~\(\mu\)s (pico de 45~mA) e chega a 1{,}10~A em 120~\(\mu\)s. O maior passo ensaiado para o RK4 nesse circuito, 286~\(\mu\)s, ainda está abaixo de 295~\(\mu\)s: a solução não explode, mas o pico numérico cai a 30~mA e o erro máximo é 41~mA. O método é estável e, ao mesmo tempo, inútil para ler a amplitude.
+
+Para \(Q=50\), o Euler já cresce em \(h=5~\mu\mathrm{s}\) (pico de 0{,}12~A contra cerca de 49~mA físicos) e atinge 9{,}1~A em 20~\(\mu\)s. O Heun rompe entre 40~\(\mu\)s e 80~\(\mu\)s. O RK4 mantém o pico perto do valor físico até 200~\(\mu\)s e só dá sinal de crescimento no último passo, de 286~\(\mu\)s, ligeiramente acima do limite de 284{,}8~\(\mu\)s. O muro previsto pela função de estabilidade aparece na integração, no lugar previsto.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=\textwidth]{estabilidade.pdf}
+\caption{Pico de \(|i|\) no intervalo de 6~ms, em função do passo. As retas pontilhadas marcam o limite de estabilidade de cada método. Acima dele o pico deixa de ser o pico do circuito.}
+\label{fig:estab}
+\end{figure}

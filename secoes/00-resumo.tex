@@ -1,0 +1,14 @@
+% =====================================================================
+% Resumo, palavras-chave e sumário. Sem número de seção.
+% =====================================================================
+\section*{Resumo}
+\addcontentsline{toc}{section}{Resumo}
+
+Este trabalho articula a história do cálculo numérico com a ciência da computação e aprofunda os métodos de passo único para equações diferenciais ordinárias. O problema de engenharia é o circuito RLC série, tratado como protótipo de um estágio ressonante de comunicações. O modelo de estados, nas variáveis corrente e tensão no capacitor, é integrado pelos métodos de Euler, de Euler melhorado e de Runge-Kutta clássico de quarta ordem, implementados em Python sem integrador de biblioteca. As soluções numéricas são comparadas às formas fechadas do degrau, nos regimes subamortecido, crítico e sobreamortecido, e da excitação senoidal dentro e fora da ressonância. O estudo varia o passo, o fator de qualidade, a precisão de ponto flutuante e a tolerância de um controlador adaptativo por duplicação de passo. No circuito com fator de qualidade igual a 5, as ordens observadas tendem a 1, 2 e 4. O limite de estabilidade do método de Euler coincide com o produto da resistência pela capacitância: 20~\(\mu\)s quando o fator de qualidade vale 5 e 2~\(\mu\)s quando vale 50. O Runge-Kutta de quarta ordem permanece estável até cerca de 285~\(\mu\)s nesse segundo caso. Em precisão simples, o erro deixa de cair com o refinamento do passo e estaciona na casa de \(10^{-8}\)~A; em precisão dupla, o mesmo método chega à casa de \(10^{-16}\)~A. A ordem reduz o custo de uma precisão prescrita, e a região de estabilidade absoluta decide se a simulação de um tanque seletivo permanece física.
+
+\vspace{0.6em}
+\noindent\textbf{Palavras-chave:} cálculo numérico; método de Runge-Kutta; circuito RLC; estabilidade numérica; telecomunicações.
+
+\clearpage
+\tableofcontents
+\clearpage

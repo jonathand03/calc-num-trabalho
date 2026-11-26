@@ -1,0 +1,27 @@
+% =====================================================================
+% 5. Aplicações em engenharia
+% =====================================================================
+\section{Aplicações em engenharia}
+\label{sec:aplicacoes}
+
+\subsection{O série como estágio ressonante}
+
+Os parâmetros de referência são \(L=10~\mathrm{mH}\), \(C=1~\mu\mathrm{F}\) e fontes de amplitude 5~V. A pulsação natural é exatamente \(\omega_0=10^{4}~\mathrm{rad/s}\), e a frequência natural é \(f_0=1\,591{,}55~\mathrm{Hz}\). Com \(R=20~\Omega\), tem-se \(\alpha=1\,000~\mathrm{s}^{-1}\), \(\zeta=0{,}1\), \(Q=5\), \(\omega_d=9\,949{,}87~\mathrm{rad/s}\) e período amortecido de \(631{,}7~\mu\mathrm{s}\). A banda de 3~dB do série é \(f_0/Q=318{,}3~\mathrm{Hz}\). A envoltória da resposta livre decai com constante \(1/\alpha=1~\mathrm{ms}\).
+
+Esse conjunto descreve um estágio moderadamente seletivo: um filtro de frequência intermediária de baixa seletividade, ou o protótipo em escala de um tanque de rádio. A corrente de referência no degrau tem envoltória inicial \(V_0/(\omega_d L)=50{,}3~\mathrm{mA}\). Na ressonância senoidal, a corrente permanente vale \(V_m/R=250~\mathrm{mA}\), e a tensão no capacitor atinge \(Q V_m=25~\mathrm{V}\). A sobretensão no capacitor e no indutor é o fato de projeto que o fator de qualidade resume: o tanque multiplica a tensão da fonte. Fora da sintonia a corrente cai, como a Tabela~\ref{tab:seno} registra.
+
+Com \(R=2~\Omega\), \(Q=50\) e a banda cai para \(31{,}83~\mathrm{Hz}\). É um tanque estreito, do tipo usado quando se quer separar uma portadora das vizinhas. Com \(R=200~\Omega\) o amortecimento é crítico. Com \(R=500~\Omega\) o circuito é sobreamortecido, mais próximo de um amortecedor de transitório do que de um filtro seletivo. Os quatro valores de \(R\) cobrem as situações em que o mesmo esquema elétrico muda de função.
+
+\subsection{Três excitações}
+
+O degrau representa o fechamento de uma chave sobre uma fonte contínua, ou a entrada abrupta de um nível. A senoide representa uma portadora. O intervalo de 8~ms, com \(\alpha=1\,000~\mathrm{s}^{-1}\), cobre cerca de oito constantes de tempo: a resposta natural já está pequena e a corrente se aproxima do regime permanente. O tempo até a envoltória se acomodar é o tempo de aquisição do estágio. Num receptor, ele entra no atraso entre a presença da portadora e a medida estável de amplitude ou de fase \citep{lathi2009}.
+
+O pulso gaussiano, centrado em 1~ms com desvio de 40~\(\mu\)s e amplitude de 5~V, representa uma borda rápida ou um impulso de interferência. A largura é uma fração do período natural, de modo que o tanque entra em toque e devolve a energia amortecida em \(f_0\). É o mecanismo analógico da cauda que um canal ressonante deixa num símbolo vizinho. Não há forma fechada elementar conveniente para essa fonte; a referência é um RK4 de passo \(0{,}25~\mu\mathrm{s}\), conferido contra outro de passo \(0{,}50~\mu\mathrm{s}\).
+
+\subsection{Escala de frequência}
+
+Se o tempo for medido em \(\tau=\omega_0 t\), a equação do circuito com um dado \(Q\) fica independente de \(\omega_0\). Um transformador de frequência intermediária de FM, em 10{,}7~MHz, com o mesmo \(Q\), tem a mesma forma de onda em \(\tau\). Em tempo absoluto, o passo precisa ser cerca de \(10{,}7\times 10^{6}/1\,591{,}55\approx 6{,}7\times 10^{3}\) vezes menor. O custo de integrar a portadora cresce com a frequência. Por isso simuladores de rádio usam equivalentes em banda base ou em envoltória, e não o RK4 sobre o sinal de portadora durante milhares de períodos. O protótipo de 1{,}6~kHz deste trabalho é dinamicamente fiel e computacionalmente tratável; a transposição do custo é imediata.
+
+\subsection{O que um simulador de circuitos faz de diferente}
+
+O SPICE e seus descendentes não integram um RLC isolado com RK4. A análise nodal modificada produz um sistema diferencial-algébrico, frequentemente rígido por causa de parasitários e de chaves. O SPICE2 usa integração trapezoidal e os métodos de Gear, que são métodos implícitos de múltiplos passos \citep{nagel1975}. A região de estabilidade desses métodos inclui o semieixo real negativo, o que permite passos governados pela precisão, e não pelo polo mais rápido. O estudo explícito deste trabalho não substitui esse projeto. Ele mostra, num circuito que ainda cabe na mão, por que o passo explícito encontra um muro quando \(Q\) ou a separação de escalas cresce. Esse muro é o motivo dos métodos implícitos.

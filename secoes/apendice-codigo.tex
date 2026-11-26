@@ -1,0 +1,18 @@
+% =====================================================================
+% Apêndice A: código-fonte (lido direto de codigo/rlc_runge_kutta.py)
+% =====================================================================
+\appendix
+\section{Código-fonte da implementação}
+\label{ap:codigo}
+
+O código abaixo é o programa executado para produzir as tabelas e as figuras do trabalho. O espaçamento do apêndice é simples para que a listagem permaneça legível; o corpo do trabalho usa espaçamento 1,5. A linguagem é Python 3. Os métodos de Euler, de Euler melhorado, de Runge-Kutta de quarta ordem e o controlador de passo estão implementados nas funções \texttt{passo\_euler}, \texttt{passo\_heun}, \texttt{passo\_rk4} e \texttt{rk4\_adaptativo}.
+
+\begin{singlespace}
+\VerbatimInput[%
+  fontsize=\footnotesize,%
+  numbers=left,%
+  numbersep=6pt,%
+  breaklines=true,%
+  breakanywhere=true%
+]{codigo/rlc_runge_kutta.py}
+\end{singlespace}

@@ -1,0 +1,65 @@
+% =====================================================================
+% 4. Algoritmos e implementação
+% =====================================================================
+\section{Algoritmos e implementação}
+\label{sec:algoritmos}
+
+\subsection{Entrada, saída e parada}
+
+O programa recebe a resistência, a indutância, a capacitância, a fonte \(v_s(t)\), o estado inicial, o instante final e ou um passo fixo ou um par \((\mathrm{rtol},\mathrm{atol})\). A fonte é uma função: degrau, senoide ou pulso gaussiano. A saída é a malha de tempo, os estados, o número de avaliações de \(f\) e, quando há forma fechada, o erro absoluto máximo e a raiz do erro quadrático médio da corrente e da tensão.
+
+O critério de parada do passo fixo é atingir \(t_f\). O número de passos é o inteiro mais próximo de \((t_f-t_0)/h\), e o passo é então ajustado para que a última abscissa seja exatamente \(t_f\). A integração também para se algum estado deixa de ser finito ou se a norma infinito passa de \(10^{3}\), um limite muito acima de qualquer grandeza física deste circuito. Esse segundo critério separa divergência numérica de uma simples oscilação. No modo adaptativo, a parada é \(t=t_f\) ou o teto de \(2\times 10^{5}\) tentativas.
+
+\subsection{Pseudocódigo}
+
+O Algoritmo~\ref{alg:rk4} é o RK4 de passo fixo. Euler e Heun trocam apenas o bloco que calcula \(y_{\mathrm{novo}}\): uma avaliação no Euler, duas no Heun. O Algoritmo~\ref{alg:adap} é o controlador. Os três métodos e o controlador estão escritos no Apêndice~\ref{ap:codigo}; nenhum deles chama um integrador pronto.
+
+\begin{algoritmo}[htbp]
+\centering
+\begin{minipage}{0.94\textwidth}
+\setstretch{1.05}
+\noindent\textbf{Entrada:} \(f\), \(y_0\), \(t_0\), \(t_f\), \(h\), limite de divergência.\\[0.3em]
+\(n\leftarrow\mathrm{round}((t_f-t_0)/h)\);\quad \(h\leftarrow(t_f-t_0)/n\);\quad \(y\leftarrow y_0\);\quad \(N_f\leftarrow 0\).\\[0.3em]
+\textbf{para} \(k=0,1,\ldots,n-1\) \textbf{faça}\\[0.2em]
+\hspace{1.2em}\(t\leftarrow t_0+kh\)\\
+\hspace{1.2em}\(k_1\leftarrow f(t,y)\)\\
+\hspace{1.2em}\(k_2\leftarrow f(t+h/2,\; y+hk_1/2)\)\\
+\hspace{1.2em}\(k_3\leftarrow f(t+h/2,\; y+hk_2/2)\)\\
+\hspace{1.2em}\(k_4\leftarrow f(t+h,\; y+hk_3)\)\\
+\hspace{1.2em}\(y\leftarrow y+(h/6)(k_1+2k_2+2k_3+k_4)\)\\
+\hspace{1.2em}\(N_f\leftarrow N_f+4\)\\
+\hspace{1.2em}\textbf{se} \(y\) não é finito ou \(\|y\|_{\infty}>\mathrm{limite}\) \textbf{então} marcar divergência e sair\\[0.3em]
+\textbf{Saída:} pares \((t_k,y_k)\), passo efetivo e \(N_f\).
+\end{minipage}
+\caption{Runge-Kutta clássico de quarta ordem com passo fixo e guarda de divergência.}
+\label{alg:rk4}
+\end{algoritmo}
+
+\begin{algoritmo}[htbp]
+\centering
+\begin{minipage}{0.94\textwidth}
+\setstretch{1.05}
+\noindent\textbf{Entrada:} \(f\), \(y_0\), \(t_0\), \(t_f\), \(h\), \(\mathrm{rtol}\), \(\mathrm{atol}\).\\[0.3em]
+\textbf{enquanto} \(t<t_f\) e o número de tentativas não estourou \textbf{faça}\\[0.2em]
+\hspace{1.2em}\(h\leftarrow\min(h,\,t_f-t)\)\\
+\hspace{1.2em}calcular \(y_{h}\) com um passo RK4 e \(y_{h/2}\) com dois meios passos\\
+\hspace{1.2em}estimar \(\mathrm{err}\) por \eqref{eq:erradap}\\
+\hspace{1.2em}\textbf{se} \(\mathrm{err}\le 1\) \textbf{então} aceitar \(y_{h/2}\), avançar \(t\) e atualizar \(h\) por \eqref{eq:hnovo}\\
+\hspace{1.2em}\textbf{senão} rejeitar o passo e reduzir \(h\)\\[0.3em]
+\textbf{Saída:} malha aceita, passos usados, avaliações, aceitações e rejeições.
+\end{minipage}
+\caption{Controle de passo por duplicação, com solução aceita de dois meios passos.}
+\label{alg:adap}
+\end{algoritmo}
+
+\subsection{Organização do programa e verificação}
+
+O arquivo \texttt{codigo/rlc\_runge\_kutta.py} contém o modelo, as formas fechadas, os integradores, os experimentos e a geração das figuras. NumPy fornece vetores, a solução de sistemas \(2\times 2\) e as funções elementares. O laço de passo é código próprio. Matplotlib apenas desenha. A execução única
+\begin{center}
+\texttt{python3 codigo/rlc\_runge\_kutta.py}
+\end{center}
+regrava as figuras em \texttt{figuras/} e as métricas em \texttt{codigo/resultados/metricas.json}. Todos os números das tabelas seguintes saem dessa execução.
+
+Antes dos ensaios de convergência, o programa recusa a referência analítica se o resíduo da lei de Kirchhoff, no degrau, passar de \(10^{-8}\), ou se o resíduo da equação diferencial da corrente, na senoide, passar de \(10^{-4}\). Os resíduos medidos foram da ordem de \(10^{-15}\) e \(10^{-10}\), respectivamente. A comparação com a solução analítica é, portanto, uma comparação com uma expressão conferida, não com uma fórmula copiada sem teste.
+
+A malha de tempo do ensaio em precisão simples é construída em precisão dupla. Só o estado e a função \(f\) são calculados em \emph{binary32}. Isso isola o arredondamento do integrador do arrasto da soma sucessiva do passo. O efeito de acumular \(t\) em precisão simples existe em processadores reais e seria uma segunda fonte de erro; não foi misturado a este ensaio.
