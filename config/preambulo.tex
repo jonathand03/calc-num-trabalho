@@ -17,6 +17,10 @@
 % Listagem do código no apêndice (fvextra antes do csquotes)
 \usepackage{fancyvrb}
 \usepackage{fvextra}
+% Trechos de código no texto, no formato de Aquino (2020): monoespaçado,
+% espaçamento simples, sem moldura e sem numeração de linhas.
+\DefineVerbatimEnvironment{codigo}{Verbatim}{fontsize=\small,baselinestretch=1,tabsize=4,%
+  xleftmargin=0pt,formatcom=\vspace{2pt}}
 \usepackage{csquotes}
 
 % --- Fonte: Times New Roman 12 ---
@@ -34,6 +38,7 @@
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{0pt}
 \raggedbottom % evita esticar o espaço vertical entre floats
+\setlength{\emergencystretch}{2em} % folga para linhas com nomes de código
 
 % --- Número de página no canto superior direito ---
 \usepackage{fancyhdr}

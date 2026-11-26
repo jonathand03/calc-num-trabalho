@@ -1,67 +1,121 @@
 % =====================================================================
 % 4. Algoritmos e implementação
+% Os trechos de código são cópias exatas de codigo/*.sci e codigo/main.sce.
 % =====================================================================
 \section{Algoritmos e implementação}
 \label{sec:algoritmos}
 
-\subsection{Entrada, saída e parada}
+\subsection{Entrada, saída e critério de parada}
 
-O programa recebe a resistência, a indutância, a capacitância, a fonte \(v_s(t)\), o estado inicial, o instante final e ou um passo fixo ou um par \((\mathrm{rtol},\mathrm{atol})\). A fonte é uma função: degrau, senoide ou pulso gaussiano. A saída é a malha de tempo, os estados, o número de avaliações de \(f\) e, quando há forma fechada, o erro absoluto máximo e a raiz do erro quadrático médio da corrente e da tensão.
+O programa foi escrito em Scilab e está dividido em seis arquivos, listados no Apêndice~\ref{ap:codigo}. A entrada de dados fica no início do \texttt{main.sce}. Ela define os componentes do circuito, a amplitude da fonte, os intervalos de simulação e os passos de cada ensaio:
+\begin{codigo}
+L = 10e-3;          // indutância (H)
+C = 1e-6;           // capacitância (F)
+V0 = 5;             // amplitude da fonte (V)
+R = 20;             // resistência do circuito principal (ohm), Q = 5
+tf_conv = 5e-3;     // intervalo dos ensaios de convergência (s)
+hs_conv = [8e-6, 4e-6, 2e-6, 1e-6, 5e-7, 2.5e-7];
+\end{codigo}
+A saída tem duas partes. O arquivo \texttt{codigo/resultados/metricas\_scilab.json} guarda todos os números das tabelas. A pasta \texttt{figuras/} recebe os gráficos em PDF.
 
-O critério de parada do passo fixo é atingir \(t_f\). O número de passos é o inteiro mais próximo de \((t_f-t_0)/h\), e o passo é então ajustado para que a última abscissa seja exatamente \(t_f\). A integração também para se algum estado deixa de ser finito ou se a norma infinito passa de \(10^{3}\), um limite muito acima de qualquer grandeza física deste circuito. Esse segundo critério separa divergência numérica de uma simples oscilação. No modo adaptativo, a parada é \(t=t_f\) ou o teto de \(2\times 10^{5}\) tentativas.
+A integração tem dois critérios de parada. O normal é chegar ao instante final \(t_f\). O outro detecta divergência: a integração para se algum valor do estado deixa de ser finito ou passa de um limite muito acima das grandezas físicas do circuito. Esse limite é \(10^{6}\) nos ensaios comuns e \(10^{3}\) no ensaio de estabilidade. O segundo critério separa uma solução que explodiu de uma simples oscilação.
 
 \subsection{Pseudocódigo}
 
-O Algoritmo~\ref{alg:rk4} é o RK4 de passo fixo. Euler e Heun trocam apenas o bloco que calcula \(y_{\mathrm{novo}}\): uma avaliação no Euler, duas no Heun. O Algoritmo~\ref{alg:adap} é o controlador. Os três métodos e o controlador estão escritos no Apêndice~\ref{ap:codigo}; nenhum deles chama um integrador pronto.
+O Algoritmo~\ref{alg:rk4} resume a integração com o RK4. Para o Euler e o Heun, muda só o bloco que calcula o novo valor de \(y\): o Euler faz uma avaliação de \(f\) por passo, e o Heun faz duas.
 
 \begin{algoritmo}[htbp]
 \centering
-\caption{Runge-Kutta clássico de quarta ordem com passo fixo e guarda de divergência.}
+\caption{Runge-Kutta de quarta ordem com passo fixo e parada por divergência.}
 \label{alg:rk4}
 \begin{minipage}{0.94\textwidth}
 \setstretch{1.05}
 \noindent\textbf{Entrada:} \(f\), \(y_0\), \(t_0\), \(t_f\), \(h\), limite de divergência.\\[0.3em]
 \(n\leftarrow\mathrm{round}((t_f-t_0)/h)\);\quad \(h\leftarrow(t_f-t_0)/n\);\quad \(y\leftarrow y_0\);\quad \(N_f\leftarrow 0\).\\[0.3em]
 \textbf{para} \(k=0,1,\ldots,n-1\) \textbf{faça}\\[0.2em]
-\hspace{1.2em}\(t\leftarrow t_0+kh\)\\
-\hspace{1.2em}\(k_1\leftarrow f(t,y)\)\\
-\hspace{1.2em}\(k_2\leftarrow f(t+h/2,\; y+hk_1/2)\)\\
-\hspace{1.2em}\(k_3\leftarrow f(t+h/2,\; y+hk_2/2)\)\\
-\hspace{1.2em}\(k_4\leftarrow f(t+h,\; y+hk_3)\)\\
-\hspace{1.2em}\(y\leftarrow y+(h/6)(k_1+2k_2+2k_3+k_4)\)\\
-\hspace{1.2em}\(N_f\leftarrow N_f+4\)\\
-\hspace{1.2em}\textbf{se} \(y\) não é finito ou \(\|y\|_{\infty}>\mathrm{limite}\) \textbf{então} marcar divergência e sair\\[0.3em]
-\textbf{Saída:} pares \((t_k,y_k)\), passo efetivo e \(N_f\).
+\hspace*{1.2em}\(t\leftarrow t_0+kh\)\\
+\hspace*{1.2em}\(K_1\leftarrow h\,f(t,y)\)\\
+\hspace*{1.2em}\(K_2\leftarrow h\,f(t+h/2,\; y+K_1/2)\)\\
+\hspace*{1.2em}\(K_3\leftarrow h\,f(t+h/2,\; y+K_2/2)\)\\
+\hspace*{1.2em}\(K_4\leftarrow h\,f(t+h,\; y+K_3)\)\\
+\hspace*{1.2em}\(y\leftarrow y+(K_1+2K_2+2K_3+K_4)/6\)\\
+\hspace*{1.2em}\(N_f\leftarrow N_f+4\)\\
+\hspace*{1.2em}\textbf{se} \(y\) não é finito ou \(\max|y|>\mathrm{limite}\) \textbf{então} marcar divergência e sair\\[0.3em]
+\textbf{Saída:} pares \((t_k,y_k)\), passo usado e número \(N_f\) de avaliações de \(f\).
 \end{minipage}
-\fonte{Elaborado pelos autores (2026).}
+\fonte{Elaborado pelos autores (2026), com base em \textcite[seção~10.3.2]{aquino2020}.}
 \end{algoritmo}
 
-\begin{algoritmo}[htbp]
-\centering
-\caption{Controle de passo por duplicação, com solução aceita de dois meios passos.}
-\label{alg:adap}
-\begin{minipage}{0.94\textwidth}
-\setstretch{1.05}
-\noindent\textbf{Entrada:} \(f\), \(y_0\), \(t_0\), \(t_f\), \(h\), \(\mathrm{rtol}\), \(\mathrm{atol}\).\\[0.3em]
-\textbf{enquanto} \(t<t_f\) e o número de tentativas não estourou \textbf{faça}\\[0.2em]
-\hspace{1.2em}\(h\leftarrow\min(h,\,t_f-t)\)\\
-\hspace{1.2em}calcular \(y_{h}\) com um passo RK4 e \(y_{h/2}\) com dois meios passos\\
-\hspace{1.2em}estimar \(\mathrm{err}\) por \eqref{eq:erradap}\\
-\hspace{1.2em}\textbf{se} \(\mathrm{err}\le 1\) \textbf{então} aceitar \(y_{h/2}\), avançar \(t\) e atualizar \(h\) por \eqref{eq:hnovo}\\
-\hspace{1.2em}\textbf{senão} rejeitar o passo e reduzir \(h\)\\[0.3em]
-\textbf{Saída:} malha aceita, passos usados, avaliações, aceitações e rejeições.
-\end{minipage}
-\fonte{Elaborado pelos autores (2026).}
-\end{algoritmo}
+\subsection{O código, função por função}
 
-\subsection{Organização do programa e verificação}
+\paragraph{Modelo do circuito.} A função \texttt{rlc\_campo} calcula o lado direito \(f(t,y)\) da Equação~\eqref{eq:sistema}. A primeira linha aplica a lei das malhas e dá \(di/dt\). A segunda aplica a relação do capacitor e dá \(dv_C/dt\). A terceira junta as duas derivadas num vetor coluna. A struct \texttt{p} guarda \(R\), \(L\), \(C\) e os dados da fonte.
+\begin{codigo}
+function dy = rlc_campo(t, y, p)
+    di = (fonte_vs(t, p) - p.R * y(1) - y(2)) / p.L;
+    dvc = y(1) / p.C;
+    dy = [di; dvc];
+endfunction
+\end{codigo}
 
-O arquivo \texttt{codigo/rlc\_runge\_kutta.py} contém o modelo, as formas fechadas, os integradores, os experimentos e a geração das figuras. NumPy fornece vetores, a solução de sistemas \(2\times 2\) e as funções elementares. O laço de passo é código próprio. Matplotlib apenas desenha. A execução única
-\begin{center}
-\texttt{python3 codigo/rlc\_runge\_kutta.py}
-\end{center}
-regrava as figuras em \texttt{figuras/} e as métricas em \texttt{codigo/resultados/metricas.json}. Todos os números das tabelas seguintes saem dessa execução.
+\paragraph{Os três métodos.} Cada método é uma função que avança um único passo e devolve o novo estado \texttt{y1} e o número \texttt{nf} de avaliações de \(f\) que gastou. A forma segue o livro da disciplina \cite[cap.~10]{aquino2020}. O Euler aplica a Equação~\eqref{eq:euler} numa linha só:
+\begin{codigo}
+y1 = y + h * rlc_campo(t, y, p);
+\end{codigo}
+O Heun segue a Equação~\eqref{eq:heun}. A variável \texttt{f1} guarda a inclinação no início do passo, para que ela não seja calculada duas vezes. \texttt{K1} é a previsão de Euler. A última linha corrige o passo com a média das duas inclinações:
+\begin{codigo}
+f1 = rlc_campo(t, y, p);
+K1 = y + h * f1;
+y1 = y + h * (f1 + rlc_campo(t + h, K1, p)) / 2;
+\end{codigo}
+O RK4 segue a Equação~\eqref{eq:rk4}. Cada \texttt{K} já vem multiplicado por \(h\), como em \textcite[seção~10.3.2]{aquino2020}. \texttt{K2} e \texttt{K3} usam o meio do passo, \texttt{K4} usa o fim, e a última linha faz a média com pesos 1, 2, 2 e 1:
+\begin{codigo}
+K1 = h * rlc_campo(t, y, p);
+K2 = h * rlc_campo(t + h/2, y + K1/2, p);
+K3 = h * rlc_campo(t + h/2, y + K2/2, p);
+K4 = h * rlc_campo(t + h, y + K3, p);
+y1 = y + (K1 + 2*K2 + 2*K3 + K4) / 6;
+\end{codigo}
 
-Antes dos ensaios de convergência, o programa recusa a referência analítica se o resíduo da lei de Kirchhoff, no degrau, passar de \(10^{-8}\), ou se o resíduo da equação diferencial da corrente, na senoide, passar de \(10^{-4}\). Os resíduos medidos foram da ordem de \(10^{-15}\) e \(10^{-10}\), respectivamente. A comparação com a solução analítica é, portanto, uma comparação com uma expressão conferida, não com uma fórmula copiada sem teste.
+\paragraph{O laço de integração.} A função \texttt{integrar} recebe um dos três métodos como argumento (\texttt{passo}) e repete o passo até \(t_f\). Primeiro, ela calcula o número de passos \texttt{n} e ajusta o passo para \texttt{he}, de modo que a malha de tempo termine exatamente em \(t_f\). Dentro do laço, chama o método, soma as avaliações em \texttt{nf} e testa a divergência. Se o estado estourar, marca \texttt{estavel = \%f} e para.
+\begin{codigo}
+n = max(round((tf - t0) / h), 1);
+he = (tf - t0) / n;
+t = t0 + he * (0:n);
+for k = 1:n
+    [yn, m] = passo(t(k), y(:, k), he, p);
+    nf = nf + m;
+    if or(isnan(yn)) | or(isinf(yn)) | max(abs(yn)) > limite then
+        estavel = %f;
+        break
+    end
+    y(:, k + 1) = yn;
+end
+\end{codigo}
 
-A malha de tempo do ensaio em precisão simples é construída em precisão dupla. Só o estado e a função \(f\) são calculados em \emph{binary32}. Isso isola o arredondamento do integrador do arrasto da soma sucessiva do passo. O efeito de acumular \(t\) em precisão simples existe em processadores reais e seria uma segunda fonte de erro; não foi misturado a este ensaio.
+\paragraph{Soluções exatas e erro.} O arquivo \texttt{rlc\_exatas.sci} escreve as Equações \eqref{eq:i-sub} a \eqref{eq:i-res} em forma vetorial, com os operadores elemento a elemento do Scilab (\texttt{.*}). As funções \texttt{residuo\_degrau} e \texttt{residuo\_seno} conferem essas fórmulas antes do uso. A função \texttt{erro\_max} compara a solução numérica com a exata e devolve o maior erro absoluto da corrente e da tensão. Ela usa só os instantes em que as duas soluções são finitas:
+\begin{codigo}
+ok = and(~isnan(y), "r") & and(~isnan(ref), "r");
+e = [max(abs(y(1, ok) - ref(1, ok))), max(abs(y(2, ok) - ref(2, ok)))];
+\end{codigo}
+
+\paragraph{Ordem de convergência.} A função \texttt{ordem\_observada} calcula a ordem entre dois passos vizinhos por \(\log(E_1/E_2)/\log(h_1/h_2)\). A função \texttt{ajuste\_ordem} ajusta a reta \(\log E=\log C+p\log h\) pelo método dos mínimos quadrados, resolvido com o operador \texttt{\textbackslash} do Scilab. A inclinação \(p\) é a ordem observada. A constante \(C\) alimenta a estimativa de custo da Seção~\ref{sec:resultados}.
+
+\paragraph{Limite de estabilidade.} A função \texttt{limite\_estab} varre 40\,000 valores de \(h\), de \(0{,}125~\mu\)s a 5~ms. Para cada um, calcula \(|R(h\lambda)|\) nos dois autovalores, com a função \texttt{funcao\_estab}, que implementa a Equação~\eqref{eq:Rz}. O laço para no primeiro \(h\) instável e devolve o último \(h\) estável:
+\begin{codigo}
+for h = hs
+    if or(abs(funcao_estab(metodo, h * p.lambda)) > 1 + 1e-9) then
+        break
+    end
+    hmax = h;
+end
+\end{codigo}
+
+\paragraph{Comparação com o comando \texttt{ode}.} A função \texttt{exp\_ode} resolve o mesmo degrau com o comando \texttt{ode} do Scilab, nas opções \texttt{"rk"} e padrão (\texttt{lsoda}), e mede o erro e o número de avaliações de \(f\) \cite[seção~10.7]{aquino2020}. Essa é a comparação com outra técnica numérica pedida no roteiro. Os métodos do trabalho não usam o \texttt{ode}.
+
+\subsection{Como executar}
+
+No console do Scilab, na pasta do trabalho, o comando abaixo roda todos os ensaios, grava os resultados e gera as figuras:
+\begin{codigo}
+exec("codigo/main.sce", -1)
+\end{codigo}
+Todos os números das tabelas e das figuras da Seção~\ref{sec:resultados} saem dessa execução. O programa confere as soluções exatas antes dos ensaios e para com uma mensagem de erro se algum resíduo passar de \(5\times10^{-3}\). Os resíduos medidos, da ordem de \(10^{-15}\) no degrau e de \(10^{-10}\) na senoide, mostram que o erro medido nos ensaios é do método numérico, e não da fórmula de referência.
