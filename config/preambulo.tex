@@ -1,57 +1,124 @@
 % =====================================================================
-% Preâmbulo: pacotes e formatação do relatório
+% Preâmbulo: formatação do relatório (base ABNT, mesmo modelo do
+% relatório de Computação Gráfica).
 % =====================================================================
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage[brazil]{babel}
-\usepackage{mathptmx}
-\usepackage{amsmath,amssymb}
-\usepackage[a4paper,margin=2.5cm,headheight=14.5pt]{geometry}
-\usepackage{setspace}
-\usepackage{indentfirst}
-\usepackage{microtype}
-\usepackage{graphicx}
-\usepackage{booktabs}
-\usepackage{array}
-\usepackage{caption}
-\usepackage{float}
-\usepackage{enumitem}
-\usepackage{tikz}
-\usepackage{newfloat}
-\usepackage{fancyvrb}
-\usepackage{fvextra}
-\usepackage{fancyhdr}
-\usepackage[hyphens]{url}
-\usepackage[round,semicolon,authoryear]{natbib}
-\usepackage[hidelinks]{hyperref}
 
-\onehalfspacing
+% --- Idioma e codificação ---
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[brazilian]{babel}
+\usepackage{csquotes}
+
+% --- Fonte: Times New Roman 12 ---
+\usepackage{mathptmx}
+\usepackage{microtype}
 \frenchspacing
+
+% --- Página A4, margens: sup. e esq. 3 cm; inf. e dir. 2 cm ---
+\usepackage[a4paper,top=3cm,left=3cm,bottom=2cm,right=2cm,headsep=0.6cm,headheight=15pt]{geometry}
+
+% --- Espaçamento 1,5 e parágrafo com recuo de 1,25 cm, justificado ---
+\usepackage{setspace}
+\onehalfspacing
+\usepackage{indentfirst}
 \setlength{\parindent}{1.25cm}
 \setlength{\parskip}{0pt}
-\raggedbottom
-\setlist{itemsep=0.25em,topsep=0.4em}
-\captionsetup{font=small,labelfont=bf,skip=6pt}
-\DeclareFloatingEnvironment[fileext=loa,listname={Lista de algoritmos},name=Algoritmo,placement=htbp]{algoritmo}
-\graphicspath{{figuras/}}
-\urlstyle{rm}
+\raggedbottom % evita esticar o espaço vertical entre floats
 
+% --- Número de página no canto superior direito ---
+\usepackage{fancyhdr}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[R]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
-\fancypagestyle{plain}{%
-  \fancyhf{}%
-  \fancyhead[R]{\thepage}%
-  \renewcommand{\headrulewidth}{0pt}%
-}
-\numberwithin{equation}{section}
+\fancypagestyle{plain}{\fancyhf{}\fancyhead[R]{\thepage}\renewcommand{\headrulewidth}{0pt}}
 
+% --- Títulos de seção: "1. Introdução", em negrito ---
+\usepackage{titlesec}
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+\renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+\titleformat{\section}{\normalfont\fontsize{13}{15}\bfseries}{\thesection.}{0.4em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.5em}{}
+\titleformat{\subsubsection}{\normalfont\normalsize\bfseries}{\thesubsubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{18pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{4pt}
+\titlespacing*{\subsubsection}{0pt}{10pt}{4pt}
+
+% --- Matemática ---
+\usepackage{amsmath}
+\usepackage{amssymb}
+\numberwithin{equation}{section}   % equações numeradas por seção: (3.1)
+
+% --- Figuras, tabelas e quadros: legenda ACIMA, fonte ABAIXO, tamanho 10 ---
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[font={footnotesize,singlespacing},labelsep=endash,justification=centering,skip=4pt]{caption}
+\usepackage{subcaption}
+\captionsetup[figure]{name=Figura,position=above}
+\captionsetup[table]{name=Tabela,position=above}
+\captionsetup[sub]{labelformat=parens,labelsep=space,position=below}
+
+% Quadro (texto, bordas fechadas): ambiente próprio, numeração própria
+\usepackage{newfloat}
+\DeclareFloatingEnvironment[fileext=loq,name=Quadro,placement=H]{quadro}
+\captionsetup[quadro]{position=above}
+
+% Algoritmo (pseudocódigo): float próprio, legenda acima como as figuras
+\DeclareFloatingEnvironment[fileext=loa,listname={Lista de algoritmos},name=Algoritmo,placement=htbp]{algoritmo}
+\captionsetup[algoritmo]{position=above}
+
+% Diagramas desenhados no próprio LaTeX (circuito RLC)
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+
+% \fonte{...}: linha "Fonte: ..." abaixo de figura, tabela, quadro ou algoritmo
+\newcommand{\fonte}[1]{\par\vspace{2pt}{\centering\footnotesize Fonte: #1\par}}
+
+% \figura{arquivo}{largura}{legenda}{rótulo}{fonte}
+\newcommand{\figura}[5]{%
+  \begin{figure}[H]
+    \centering
+    \caption{#3}\label{#4}
+    \includegraphics[width=#2]{#1}
+    \fonte{#5}
+  \end{figure}}
+
+% Caminho das imagens (geradas por codigo/rlc_runge_kutta.py)
+\graphicspath{{figuras/}}
+
+% --- Listas ---
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.25cm}
+
+% --- Citação direta longa: recuo de 4 cm, fonte 10, espaço simples, sem aspas ---
+\newenvironment{citacao}{%
+  \par\vspace{6pt}\begin{list}{}{\setlength{\leftmargin}{4cm}\setlength{\rightmargin}{0pt}}
+  \item[]\footnotesize\singlespacing}{%
+  \end{list}\vspace{6pt}}
+
+% --- Listagem do código no apêndice ---
+\usepackage{fancyvrb}
+\usepackage{fvextra}
+
+% --- Referências (provisório: lista manual em secoes/99-referencias.tex) ---
+% A etapa de migração troca natbib por biblatex-abnt + referencias.bib.
+\usepackage[round,semicolon,authoryear]{natbib}
 \makeatletter
 \renewcommand{\@biblabel}[1]{}
 \makeatother
 \setlength{\bibhang}{1.25cm}
 
-\title{do Cálculo Numérico e sua Relação com a Ciência da Computação: Estudo e Implementação dos Métodos de Runge-Kutta na Simulação de Circuitos RLC}
+% --- Links (sem caixas coloridas) ---
+\usepackage[hyphens]{url}          % quebra URLs longas no hífen
+\usepackage[hidelinks]{hyperref}
+\urlstyle{same}
 
-\date{2026}
+% --- Comando para marcar o que falta confirmar (aparece em vermelho) ---
+\usepackage{xcolor}
+\newcommand{\confirmar}[1]{\textcolor{red}{[CONFIRMAR: #1]}}
+% Para a versão final: descomente a linha abaixo para esconder as marcações
+% \renewcommand{\confirmar}[1]{}

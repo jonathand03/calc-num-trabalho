@@ -26,13 +26,15 @@ A Figura~\ref{fig:prec} e a Tabela~\ref{tab:prec} repetem o RK4 do degrau, agora
 0{,}03125 & \(7{,}95\times 10^{-16}\) & \(4{,}35\times 10^{-7}\) \\
 \bottomrule
 \end{tabular}
+\fonte{Elaborado pelo autor (2026).}
 \end{table}
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=0.92\textwidth]{precisao.pdf}
 \caption{Erro do RK4 em precisão dupla e simples. O truncamento cai com o passo; o arredondamento da precisão simples estabelece um piso e, abaixo dele, o erro volta a subir.}
 \label{fig:prec}
+\includegraphics[width=0.92\textwidth]{precisao.pdf}
+\fonte{Elaborado pelo autor (2026).}
 \end{figure}
 
 O número importa para um processador embarcado ou um DSP que só oferece ponto flutuante de 32 bits em hardware. Neste circuito, gastar um passo menor do que cerca de 1~\(\mu\)s em precisão simples não compra dígito nenhum. Uma corrente de dezenas de miliampères fica com erro absoluto perto de \(10^{-7}\)~A, o que é folgado para desenhar a forma de onda e pode ser curto para uma integração muito longa, para uma diferença de duas simulações próximas ou para um \(Q\) tão alto que a energia dissipada por ciclo seja comparável ao erro acumulado. Precisão dupla emula o formato largo em software, com custo de tempo. O ensaio quantifica o que se troca.

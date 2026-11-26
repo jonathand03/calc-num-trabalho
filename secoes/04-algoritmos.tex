@@ -16,6 +16,8 @@ O Algoritmo~\ref{alg:rk4} é o RK4 de passo fixo. Euler e Heun trocam apenas o b
 
 \begin{algoritmo}[htbp]
 \centering
+\caption{Runge-Kutta clássico de quarta ordem com passo fixo e guarda de divergência.}
+\label{alg:rk4}
 \begin{minipage}{0.94\textwidth}
 \setstretch{1.05}
 \noindent\textbf{Entrada:} \(f\), \(y_0\), \(t_0\), \(t_f\), \(h\), limite de divergência.\\[0.3em]
@@ -31,12 +33,13 @@ O Algoritmo~\ref{alg:rk4} é o RK4 de passo fixo. Euler e Heun trocam apenas o b
 \hspace{1.2em}\textbf{se} \(y\) não é finito ou \(\|y\|_{\infty}>\mathrm{limite}\) \textbf{então} marcar divergência e sair\\[0.3em]
 \textbf{Saída:} pares \((t_k,y_k)\), passo efetivo e \(N_f\).
 \end{minipage}
-\caption{Runge-Kutta clássico de quarta ordem com passo fixo e guarda de divergência.}
-\label{alg:rk4}
+\fonte{Elaborado pelo autor (2026).}
 \end{algoritmo}
 
 \begin{algoritmo}[htbp]
 \centering
+\caption{Controle de passo por duplicação, com solução aceita de dois meios passos.}
+\label{alg:adap}
 \begin{minipage}{0.94\textwidth}
 \setstretch{1.05}
 \noindent\textbf{Entrada:} \(f\), \(y_0\), \(t_0\), \(t_f\), \(h\), \(\mathrm{rtol}\), \(\mathrm{atol}\).\\[0.3em]
@@ -48,8 +51,7 @@ O Algoritmo~\ref{alg:rk4} é o RK4 de passo fixo. Euler e Heun trocam apenas o b
 \hspace{1.2em}\textbf{senão} rejeitar o passo e reduzir \(h\)\\[0.3em]
 \textbf{Saída:} malha aceita, passos usados, avaliações, aceitações e rejeições.
 \end{minipage}
-\caption{Controle de passo por duplicação, com solução aceita de dois meios passos.}
-\label{alg:adap}
+\fonte{Elaborado pelo autor (2026).}
 \end{algoritmo}
 
 \subsection{Organização do programa e verificação}

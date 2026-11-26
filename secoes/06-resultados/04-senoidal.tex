@@ -20,13 +20,15 @@ Caso & \(|I|\) (mA) & fase & Euler & Heun & RK4 \\
 \(\omega=1{,}4\,\omega_0\) & 70{,}00 & \(-73{,}7^{\circ}\) & \(2{,}88\times 10^{-3}\) & \(8{,}33\times 10^{-6}\) & \(4{,}58\times 10^{-11}\) \\
 \bottomrule
 \end{tabular}
+\fonte{Elaborado pelo autor (2026).}
 \end{table}
 
 Na ressonância a corrente cresce durante alguns milissegundos até 250~mA, como mostra a Figura~\ref{fig:seno}. Fora da ressonância, em \(0{,}7\,\omega_0\), a reatância é capacitiva, a corrente adianta 74{,}6° e a amplitude cai para 66{,}2~mA. Em \(1{,}4\,\omega_0\) a corrente atrasa 73{,}7° e a amplitude é 70{,}0~mA. O RK4 acompanha a forma fechada com erro inferior a \(10^{-9}\)~A. O Euler, no mesmo passo, erra cerca de 13~mA na ressonância, 5\% da amplitude permanente. Para decidir a seletividade de um estágio, esse erro já desloca a leitura.
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{senoidal.pdf}
 \caption{Corrente com excitação senoidal de 5~V e \(h=1~\mu\mathrm{s}\). As retas tracejadas são a amplitude do regime permanente. RK4 e solução analítica se sobrepõem.}
 \label{fig:seno}
+\includegraphics[width=\textwidth]{senoidal.pdf}
+\fonte{Elaborado pelo autor (2026).}
 \end{figure}

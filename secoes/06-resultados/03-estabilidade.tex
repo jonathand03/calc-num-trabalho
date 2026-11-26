@@ -18,6 +18,7 @@ Circuito & Euler & Euler melhorado & RK4 \\
 \(R=2~\Omega\), \(Q=50\) & 2{,}00~\(\mu\)s & 44{,}4~\(\mu\)s & 284{,}8~\(\mu\)s \\
 \bottomrule
 \end{tabular}
+\fonte{Elaborado pelo autor (2026).}
 \end{table}
 
 A Figura~\ref{fig:estab} integra o degrau até 6~ms e marca o pico de \(|i|\). As retas verticais são os limites da Tabela~\ref{tab:hestab}. Para \(Q=5\), o pico físico fica perto de 43~mA. Com \(h=25~\mu\mathrm{s}\), o Euler já atinge 0{,}21~A; com \(h=40~\mu\mathrm{s}\), a integração é interrompida pela guarda de divergência. O Heun permanece físico até 80~\(\mu\)s (pico de 45~mA) e chega a 1{,}10~A em 120~\(\mu\)s. O maior passo ensaiado para o RK4 nesse circuito, 286~\(\mu\)s, ainda está abaixo de 295~\(\mu\)s: a solução não explode, mas o pico numérico cai a 30~mA e o erro máximo é 41~mA. O método é estável e, ao mesmo tempo, inútil para ler a amplitude.
@@ -26,7 +27,8 @@ Para \(Q=50\), o Euler já cresce em \(h=5~\mu\mathrm{s}\) (pico de 0{,}12~A con
 
 \begin{figure}[htbp]
 \centering
-\includegraphics[width=\textwidth]{estabilidade.pdf}
 \caption{Pico de \(|i|\) no intervalo de 6~ms, em função do passo. As retas pontilhadas marcam o limite de estabilidade de cada método. Acima dele o pico deixa de ser o pico do circuito.}
 \label{fig:estab}
+\includegraphics[width=\textwidth]{estabilidade.pdf}
+\fonte{Elaborado pelo autor (2026).}
 \end{figure}
